@@ -6,9 +6,9 @@ Base = declarative_base()
 
 dish_ingredient = Table(
     'dish_ingredient',
-    Base.meradata,
-    Column('dish_id', Integer, ForeignKey('dishes.id')),
-    Column('ingredient_id', Integer, ForeignKey('ingredients.id')),
+    Base.metadata,
+    Column('dish_id', Integer, ForeignKey('dish.id')),
+    Column('ingredient_id', Integer, ForeignKey('ingredient.id')),
     Column('amount', Float)
     )
 
@@ -21,7 +21,7 @@ class Ingredient(Base):
     __tablename__ = 'ingredient'
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    unit_id = Column(Integer, ForeignKey('units.id'))
+    unit_id = Column(Integer, ForeignKey('unit.id'))
     dishes = relationship('Dish', secondary=dish_ingredient, back_populates='ingredients')
     
 class Dish(Base):
