@@ -16,6 +16,9 @@ class Unit(Base):
     __tablename__ = 'unit'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    
+    def __repr__(self):
+        return str(vars(self))
 
 class Ingredient(Base):
     __tablename__ = 'ingredient'
@@ -24,8 +27,14 @@ class Ingredient(Base):
     unit_id = Column(Integer, ForeignKey('unit.id'))
     dishes = relationship('Dish', secondary=dish_ingredient, back_populates='ingredients')
     
+    def __repr__(self):
+        return str(vars(self))
+    
 class Dish(Base):
     __tablename__ = 'dish'
     id = Column(Integer, primary_key=True)
     name = Column(String)
     ingredients = relationship('Ingredient', secondary=dish_ingredient, back_populates='dishes')
+    
+    def __repr__(self):
+        return str(vars(self))
