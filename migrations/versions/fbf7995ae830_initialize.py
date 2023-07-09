@@ -7,7 +7,8 @@ Create Date: 2023-07-09 16:14:09.131918
 """
 import sqlalchemy as sa
 from alembic import op
-from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
+from app.models import Dish, Unit, Ingredient, dish_ingredient
+
 
 # revision identifiers, used by Alembic.
 revision = 'fbf7995ae830'
@@ -17,31 +18,15 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.create_table(
-        'dish_ingredient',
-        Column('dish_id', Integer, ForeignKey('dishes.id')),
-        Column('ingredient_id', Integer, ForeignKey('ingredients.id')),
-        Column('amount', Float)
-    )
+    bind = op.get_bind()
+    session = sa.orm.Session()
     
-    op.create_table(
-        'unit',
-        Column('id', Integer, primary_key=True),
-        Column('name', String),
-    )
-    
-    op.create_table(
-        'ingredient',
-        Column('id', Integer, primary_key=True),
-        Column('name', String),
-        Column('unit_id', Integer, ForeignKey('units.id')),
-    )
-    
-    op.create_table(
-        'dish',
-        Column('id', Integer, primary_key=True),
-        Column('name', String),
-    )
+    # Create tables
+    Unit.__table__.create(bind)
+    Dish.__table__.create(bind)
+    Ingredient.__table__.create(bind)
+    dish_ingredient.create(bind)
+    session.commit()
 
 
 def downgrade() -> None:
